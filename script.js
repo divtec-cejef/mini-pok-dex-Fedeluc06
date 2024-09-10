@@ -9,6 +9,8 @@
 // Couleur par défaut pour les types de Pokémon non définis
 const DEFAULT_COLOR = '#ccc';
 
+const pokemonContainer = document.querySelector(".pokemon-container");
+
 // Couleurs pour chaque type de Pokémon
 const typeColors = {
     'Électrique': '#FFD700',
@@ -28,8 +30,8 @@ const typeColors = {
 };
 
 // Tableau d'objets représentant les Pokémon
+
 const pokemonsTab = [
-    {name: 'Pikachu', type: 'Électrique', level: 35, img: 'pikachu.png'},
     {name: 'Bulbizarre', type: 'Plante,Poison', level: 15, img: 'bulbizarre.png'},
     {name: 'Salamèche', type: 'Feu', level: 20, img: 'salameche.png'},
     {name: 'Carapuce', type: 'Eau', level: 10, img: 'carapuce.png'},
@@ -45,25 +47,62 @@ const pokemonsTab = [
     {name: 'Lokhlass', type: 'Eau,Glace', level: 35, img: 'lokhlass.png'},
     {name: 'Onix', type: 'Roche,Sol', level: 30, img: 'onix.png'},
     {name: 'Ronflex', type: 'Normal', level: 45, img: 'ronflex.png'},
-    {name: 'Mewtwo', type: 'Psy', level: 70, img: 'mewtwo.png'}
+    {name: 'Mewtwo', type: 'Psy', level: 70, img: 'mewtwo.png'},
+    {name: 'Pikachu', type: 'Électrique', level: 35, img: 'pikachu.png'}
 ];
 
+/**
+ * Genere le code HTML pour les différentes cartes pokemons
+ * @param pokemon à afficher
+ * @returns {string} le code HTML permettant d'afficher le pokemon.
+ */
+function generatePokemonCardHTML(pokemon) {
+    let cardHTML = "<div class='pokemon-card' style='background: "
+    let listeTypes = pokemon['type'].split(',');
+
+    // Ajout couleur du Background
+    if (listeTypes.length > 1) {
+        cardHTML += "linear-gradient(to right, ";
+        for (let index = 0; index < listeTypes.length; index++) {
+            if (index !== 0)
+                cardHTML += ",";
+            cardHTML += typeColors[listeTypes[index]] + " 50%";
+        }
+        cardHTML += ")"
+    } else {
+        cardHTML += typeColors[pokemon['type']];
+    }
+
+    cardHTML += ";'> <img src='images/" + pokemon['img'] +
+        "' alt='" + pokemon['name'] + "'> <h2>" + pokemon['name'] + "</h2> <div>Type : ";
+
+    // écriture des types de pokemons
+    for (let index = 0; index < listeTypes.length; index++) {
+        if (index !== 0) {
+            cardHTML += " / ";
+        }
+        cardHTML += listeTypes[index];
+    }
+
+    return cardHTML + "</div> <div>Niveau: " + pokemon['level'] + "</div> </div>";
+}
 
 /**
- * Affiche les pokémons dans la div pokemon-container
+ * affiche les pokemons
  */
 function displayPokemons() {
-    const container = document.querySelector('.pokemon-container');
-    // Vide le contenu du container
-    container.innerHTML = '';
+    pokemonContainer.textContent = "";
+
     if (!pokemonsTab.length) {
-        container.innerHTML = '<p>Dracaufeu a tout brûlé, aucun Pokémon ne correspond à ta recherche !</p>';
-        return; // sort de la fonction.
+        pokemonContainer.innerHTML = '<p>Dracaufeu a tout brûlé, aucun Pokémon ne correspond à ta recherche !</p>'
+        return;
     }
-    let reHtml =' ';
+
+    let resHTML = '';
     for (let pokemon of pokemonsTab) {
-       reHtml += `<p>${pokemon.name} <small>${pokemon.type}</small></p>`;
+        resHTML += generatePokemonCardHTML(pokemon);
     }
-    container.innerHTML = reHtml;
+    pokemonContainer.innerHTML = resHTML;
 }
+
 displayPokemons();
