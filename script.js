@@ -51,6 +51,7 @@ const pokemonsTab = [
 // Récupérations des éléments HTML
 const searchBar = document.getElementById('search-bar');
 const selectType = document.getElementById('type-filter');
+const selectOrder = document.getElementById('sort-order');
 
 
 /**
@@ -109,6 +110,17 @@ function filterAndSortPokemons () {
     let type = selectType.value;
     resultat = resultat.filter(pokemon => pokemon.type.includes(type));
 
+    // Tri des pokémons (nom,niveau)
+    let ordre = selectOrder.value;
+    if (ordre === 'level-asc') {
+        resultat.sort((a, b) => a.level - b.level);
+    } else if (ordre === 'level-desc') {
+        resultat.sort((a, b) => b.level - a.level);
+    } else if (ordre === 'name-desc') {
+        resultat.sort((a, b) => b.name.localeCompare(a.name));
+    } else {
+        resultat.sort((a, b) => a.name.localeCompare(b.name));
+    }
     displayPokemons(resultat);
 }
 
@@ -116,3 +128,4 @@ function filterAndSortPokemons () {
 filterAndSortPokemons();
 searchBar.addEventListener('input', filterAndSortPokemons);
 selectType.addEventListener('change', filterAndSortPokemons);
+selectOrder.addEventListener('change', filterAndSortPokemons);
