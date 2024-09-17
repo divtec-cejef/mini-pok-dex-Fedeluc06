@@ -50,6 +50,8 @@ const pokemonsTab = [
 
 // Récupérations des éléments HTML
 const searchBar = document.getElementById('search-bar');
+const selectType = document.getElementById('type-filter');
+
 
 /**
  * Fonction qui retourne le code HTML de la carte du pokémon passé en paramètre
@@ -100,10 +102,17 @@ function displayPokemons (tabPokemons) {
 
 function filterAndSortPokemons () {
     const recherche = searchBar.value;
+    // Filtre par noms
     let resultat = pokemonsTab.filter(pokemon => pokemon.name.toLowerCase().includes(recherche.toLowerCase()));
-   displayPokemons(resultat);
+
+   // Filtre par types
+    let type = selectType.value;
+    resultat = resultat.filter(pokemon => pokemon.type.includes(type));
+
+    displayPokemons(resultat);
 }
 
 // Appelle la fonction filterAndSortPokemons()
 filterAndSortPokemons();
 searchBar.addEventListener('input', filterAndSortPokemons);
+selectType.addEventListener('change', filterAndSortPokemons);
