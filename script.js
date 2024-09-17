@@ -105,7 +105,7 @@ function filterAndSortPokemons () {
     // Filtre par noms
     let resultat = pokemonsTab.filter(pokemon => pokemon.name.toLowerCase().includes(recherche.toLowerCase()));
 
-   // Filtre par types
+   // Filtre par type
     let type = selectType.value;
     resultat = resultat.filter(pokemon => pokemon.type.includes(type));
 
